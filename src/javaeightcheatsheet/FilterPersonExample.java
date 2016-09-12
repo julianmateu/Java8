@@ -1,14 +1,15 @@
 package javaeightcheatsheet;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * An example of a for each loop.
+ * An example that filters a list of people to get the ones that meet ceratin condition.
  * 
  * @author jmateu
  *
  */
-public class ForEachPersonExample {
+public class FilterPersonExample {
 	private static List<Person> people = Person.getRandomList();
 	
 	public static void main(String[] args) {
@@ -20,11 +21,14 @@ public class ForEachPersonExample {
 	
 	public static void javaSeven() {
 		for (Person person : people) {
-			System.out.println("\t" + person);
+			if (person.getName().startsWith("S")) {
+				System.out.println("\t" + person);
+			}
 		}
 	}
 	
 	public static void javaEight() {
-		people.forEach(person -> System.out.println("\t" + person));
+		people.stream().filter(person -> person.getName().startsWith("S")).collect(Collectors.toList()).
+			forEach(person -> System.out.println("\t" + person));
 	}
 }

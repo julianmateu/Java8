@@ -1,14 +1,15 @@
 package javaeightcheatsheet;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * An example of a for each loop.
+ * An example that maps a list of people to a list of last names.
  * 
  * @author jmateu
  *
  */
-public class ForEachPersonExample {
+public class MapPersonExample {
 	private static List<Person> people = Person.getRandomList();
 	
 	public static void main(String[] args) {
@@ -20,11 +21,12 @@ public class ForEachPersonExample {
 	
 	public static void javaSeven() {
 		for (Person person : people) {
-			System.out.println("\t" + person);
+			System.out.println("\t" + person.getLastName());
 		}
 	}
 	
 	public static void javaEight() {
-		people.forEach(person -> System.out.println("\t" + person));
+		people.stream().map(person -> person.getLastName()).collect(Collectors.toList()).
+			forEach(string -> System.out.println("\t" + string));
 	}
 }

@@ -3,12 +3,12 @@ package javaeightcheatsheet;
 import java.util.List;
 
 /**
- * An example of a for each loop.
+ * An example that maps a list of people to a list of ages and reduces it to the average.
  * 
  * @author jmateu
  *
  */
-public class ForEachPersonExample {
+public class AveragePersonExample {
 	private static List<Person> people = Person.getRandomList();
 	
 	public static void main(String[] args) {
@@ -19,12 +19,16 @@ public class ForEachPersonExample {
 	}
 	
 	public static void javaSeven() {
+		double average = 0;
 		for (Person person : people) {
-			System.out.println("\t" + person);
+			average += person.getAge();
 		}
+		average /= people.size();
+		System.out.println("\t" + average);
 	}
 	
 	public static void javaEight() {
-		people.forEach(person -> System.out.println("\t" + person));
+		double average = people.parallelStream().mapToInt(person -> person.getAge()).average().getAsDouble();
+		System.out.println("\t" + average);
 	}
 }
