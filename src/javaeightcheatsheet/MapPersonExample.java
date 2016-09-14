@@ -1,7 +1,7 @@
 package javaeightcheatsheet;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * An example that maps a list of people to a list of last names.
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  *
  */
 public class MapPersonExample {
-	private static List<Person> people = Person.getRandomList();
+	private static List<Person> people = Person.getSamplesList();
 	
 	public static void main(String[] args) {
 		System.out.println("Java seven:");
@@ -20,13 +20,17 @@ public class MapPersonExample {
 	}
 	
 	public static void javaSeven() {
+		List<String> lastNames = new ArrayList<>();
 		for (Person person : people) {
+			lastNames.add(person.getLastName());
 			System.out.println("\t" + person.getLastName());
 		}
+		
 	}
 	
 	public static void javaEight() {
-		people.stream().map(person -> person.getLastName()).collect(Collectors.toList()).
-			forEach(string -> System.out.println("\t" + string));
+		people.stream()
+		.map(person -> person.getLastName())
+		.forEach(string -> System.out.println("\t" + string));
 	}
 }

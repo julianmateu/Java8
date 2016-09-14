@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public class ReducePersonExample {
-	private static List<Person> people = Person.getRandomList();
+	private static List<Person> people = Person.getSamplesList();
 	
 	public static void main(String[] args) {
 		System.out.println("Java seven:");
@@ -27,8 +27,9 @@ public class ReducePersonExample {
 	}
 	
 	public static void javaEight() {
-		// TODO(jmateu): can't use parallelStream here.
-		int evenCount = people.stream().mapToInt(person -> person.getAge()).reduce(0, (int partialCount, int age) -> partialCount + oneIfEven(age));
+		int evenCount = people.stream()
+				.mapToInt(person -> person.getAge())
+				.reduce(0, (int partialCount, int age) -> partialCount + oneIfEven(age));
 		System.out.println("\t" + evenCount);
 	}
 	
@@ -39,6 +40,6 @@ public class ReducePersonExample {
 	 * @return int		1 if number is even, 0 if it is odd.
 	 */
 	private static int oneIfEven(int number) {
-		return (number + 1) % 2;
+		return (number % 2) == 0 ? 1 : 0;
 	}
 }

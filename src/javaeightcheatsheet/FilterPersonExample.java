@@ -1,7 +1,6 @@
 package javaeightcheatsheet;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * An example that filters a list of people to get the ones that meet ceratin condition.
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
  *
  */
 public class FilterPersonExample {
-	private static List<Person> people = Person.getRandomList();
+	private static List<Person> people = Person.getSamplesList();
 	
 	public static void main(String[] args) {
 		System.out.println("Java seven:");
@@ -28,7 +27,6 @@ public class FilterPersonExample {
 	}
 	
 	public static void javaEight() {
-		people.stream().filter(person -> person.getName().startsWith("S")).collect(Collectors.toList()).
-			forEach(person -> System.out.println("\t" + person));
+		people.stream().filter(person -> person.getName().startsWith("S")).forEach(person -> System.out.println("\t" + person));
 	}
 }

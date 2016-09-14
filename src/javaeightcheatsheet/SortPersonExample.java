@@ -12,7 +12,7 @@ import java.util.List;
  *
  */
 public class SortPersonExample {
-	private static List<Person> people = Person.getRandomList();
+	private static List<Person> people = Person.getSamplesList();
 	
 	public static void main(String[] args) {
 		System.out.println("Java seven:");

@@ -32,7 +32,7 @@ public class Person {
 		return mName + " " + mLastName + ", " + mAge;
 	}
 	
-	public static List<Person> getRandomList() {
+	public static List<Person> getSamplesList() {
 		  return Arrays.asList(
 			      new Person("Steve", "Vai", 40),
 			      new Person("Joe", "Smith", 32),

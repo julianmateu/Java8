@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public class AveragePersonExample {
-	private static List<Person> people = Person.getRandomList();
+	private static List<Person> people = Person.getSamplesList();
 	
 	public static void main(String[] args) {
 		System.out.println("Java seven:");
@@ -28,7 +28,9 @@ public class AveragePersonExample {
 	}
 	
 	public static void javaEight() {
-		double average = people.parallelStream().mapToInt(person -> person.getAge()).average().getAsDouble();
+		double average = people.stream()
+				.mapToInt(person -> person.getAge())
+				.average().getAsDouble();
 		System.out.println("\t" + average);
 	}
 }
