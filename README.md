@@ -197,7 +197,7 @@ for (Person person : people) {
 System.out.println(evenCount);
   </pre>
   </td>
-  <td><pre>// Can't use parallel stream here
+  <td><pre>// Can not use parallel stream here
 int evenCount = people.stream()<br>&nbsp;.mapToInt(person -> person.getAge())<br>&nbsp;.reduce(0, (int partialCount, int age) -> partialCount + oneIfEven(age));
 System.out.println(venCount);</pre></td>
 </tr>
