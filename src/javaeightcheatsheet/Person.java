@@ -46,5 +46,4 @@ public class Person {
 			      new Person("Kim", "Berlie", 60)
 			    );
 	}
-
 }
