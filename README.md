@@ -37,7 +37,7 @@ public class Person {
 		return mName + " " + mLastName + ", " + mAge;
 	}
 	
-	public static List<Person> getRandomList() {
+	public static List<Person> getSamplesList() {
 		  return Arrays.asList(
 			      new Person("Steve", "Vai", 40),
 			      new Person("Joe", "Smith", 32),
@@ -54,6 +54,12 @@ public class Person {
 }
 ```
 
+Before each of the following examples, the following definition is made:
+
+```java
+List<Person> people = Person.getSamplesList();
+```
+
 ### For each loop
 <table>
 <thead>
@@ -65,10 +71,13 @@ public class Person {
 <tbody>
 <tr>
   <td>
-  <pre>for (Person person : people) { <br> &nbsp;System.out.println(person);<br>}  
+  <pre>for (Person person : people) {
+  System.out.println(person);
+}  
   </pre>
   </td>
-  <td><pre>people<br>&nbsp;.forEach(person -> System.out.println(person));</pre></td>
+  <td><pre>people
+  .forEach(person -> System.out.println(person));</pre></td>
 </tr>
 
 </tbody>
@@ -85,10 +94,16 @@ public class Person {
 <tbody>
 <tr>
   <td>
-  <pre>for (Person person : people) {<br> &nbsp; if (person.getName().startsWith("S")) {<br> &nbsp; &nbsp;System.out.println(person);<br> &nbsp; }<br>}  
+  <pre>for (Person person : people) {
+  if (person.getName().startsWith("S")) {
+  	System.out.println(person);
+  }
+}  
   </pre>
   </td>
-  <td><pre>people.stream()<br>&nbsp;.filter(person -> person.getName().startsWith("S"))<br>&nbsp;.collect(Collectors.toList())<br>&nbsp;.forEach(person -> System.out.println(person));</pre></td>
+  <td><pre>people.stream()
+  .filter(person -> person.getName().startsWith("S"))
+  .forEach(person -> System.out.println(person));</pre></td>
 </tr>
 
 </tbody>
@@ -105,15 +120,19 @@ public class Person {
 <tbody>
 <tr>
   <td>
-  <pre>List<Person> unsortedPeople = new ArrayList<>(people);<br>&nbsp;&nbsp;Collections.sort(unsortedPeople, new Comparator<Person>() {<br>&nbsp;&nbsp;&nbsp;&nbsp;@Override<br>&nbsp;&nbsp;&nbsp;&nbsp;public int compare(Person p1, Person p2) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return p1.getAge().compareTo(p2.getAge());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;});
-for (Person person : unsortedPeople) {
-&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(person);
-} 
-  </pre>
+  <pre>Collections.sort(people, new Comparator<Person>() { 
+  @Override
+  public int compare(Person p1, Person p2) {
+  	return p1.getAge().compareTo(p2.getAge());
+  }
+});</pre>
   </td>
-  <td><pre>List<Person> unsortedPeople = new ArrayList<>(people);
-Collections.sort(<br>&nbsp;unsortedPeople,<br>&nbsp;(Person p1, Person p2)<br>&nbsp;&nbsp;-> p1.getAge().compareTo(p2.getAge()));
-unsortedPeople<br>&nbsp;.forEach(person -> System.out.println(person));</pre></td>
+  <td><pre>Collections.sort(
+  people,
+  (Person p1, Person p2) 
+  	-> p1.getAge().compareTo(p2.getAge())
+);
+</pre></td>
 </tr>
 
 </tbody>
@@ -130,17 +149,21 @@ unsortedPeople<br>&nbsp;.forEach(person -> System.out.println(person));</pre></t
 <tbody>
 <tr>
   <td>
-  <pre>for (Person person : people) {<br>&nbsp;&nbsp;System.out.println(person.getLastName());
+  <pre>List<Person> lastNames
+for (Person person : people) {
+	lastNames.add(person.getAge());
 }
   </pre>
   </td>
-  <td><pre>people.stream()<br>&nbsp;.map(person -> person.getLastName())<br>&nbsp;.collect(Collectors.toList())<br>&nbsp;.forEach(string -> System.out.println(string));</pre></td>
+  <td><pre>people.stream()
+  .map(person -> person.getLastName())
+  .collect(Collectors.toList());</pre></td>
 </tr>
 
 </tbody>
 </table>
 
-### Map-reduce
+### Reduce
 #### Average:
 <table>
 <thead>
@@ -154,20 +177,22 @@ unsortedPeople<br>&nbsp;.forEach(person -> System.out.println(person));</pre></t
   <td>
   <pre>double average = 0;
 for (Person person : people) {
-&nbsp;&nbsp;average += person.getAge();
+	average += person.getAge();
 }
-average /= people.size();
-System.out.println(average);
-  </pre>
+average /= people.size();</pre>
   </td>
-  <td><pre>double average = people.parallelStream().<br>&nbsp;mapToInt(person -> person.getAge()).average().getAsDouble();
-System.out.println(average);</pre></td>
+  <td><pre>double average = people.parallelStream()
+  .mapToInt(person -> person.getAge())
+  .average().getAsDouble();</pre></td>
 </tr>
 
 </tbody>
 </table>
 
 #### Count the number of people whose age is an even number:
+
+We use the following auxiliary method:
+
 ```java
 /**
  * Returns 1 if the number is even and 0 if it is odd.
@@ -176,7 +201,7 @@ System.out.println(average);</pre></td>
  * @return int		1 if number is even, 0 if it is odd.
  */
 private static int oneIfEven(int number) {
-	return (number + 1) % 2;
+	return (number % 2) == 0 ? 1 : 0;
 }
 ```
 
@@ -192,14 +217,17 @@ private static int oneIfEven(int number) {
   <td>
   <pre>int evenCount = 0;
 for (Person person : people) {
-&nbsp;&nbsp;evenCount += oneIfEven(person.getAge());
+	evenCount += oneIfEven(person.getAge());
 }
-System.out.println(evenCount);
   </pre>
   </td>
-  <td><pre>// Can't use parallel stream here
-int evenCount = people.stream()<br>&nbsp;.mapToInt(person -> person.getAge())<br>&nbsp;.reduce(0, (int partialCount, int age) -> partialCount + oneIfEven(age));
-System.out.println(venCount);</pre></td>
+  <td><pre>int evenCount = people.stream()
+  .mapToInt(person -> person.getAge())
+  .reduce(
+  	0,
+  	(int partialCount, int age)
+  		-> partialCount + oneIfEven(age)
+  );</pre></td>
 </tr>
 
 </tbody>
