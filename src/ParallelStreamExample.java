@@ -1,24 +1,31 @@
-package javaeightcheatsheet;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
 
 public class ParallelStreamExample {
-	private static final int N = 1000;
+	private static final int N = 5000;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < N; i++) {
 			list.add(i);
 		}
-		long startTime = System.nanoTime();
-		list.stream()
-			.map(n -> new FactorialData(n));
-//			.forEach(d -> System.out.println(d.log + " . " + d.factorial.x + "! = " + d.factorial.y));
-		long elapsedTime = System.nanoTime() - startTime;
-		System.out.println("The whole computation took " + elapsedTime/10e9 + " seconds.");
+		long startTime = System.currentTimeMillis();
+		ForkJoinPool forkJoinPool = new ForkJoinPool(4);
+		System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "4");
+		forkJoinPool.submit(() ->
+			list.parallelStream()
+				.map(n -> new FactorialData(n))//.collect(Collectors.toList())
+				.forEach(d -> System.out.println(d.log + " . " + d.factorial.x + "! = " + d.factorial.y))
+		).get();
+
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		System.out.println("The whole computation took " + elapsedTime/10e3 + " seconds.");
 	}
 	
 	/**
